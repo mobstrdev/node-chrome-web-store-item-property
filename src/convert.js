@@ -20,15 +20,19 @@ function convert(detailHtml) {
     var handler = new DomHandler(null, options);
     new Parser(handler, options).end(detailHtml);
     DomUtils.getElementsByTagName('meta', handler.dom, true).forEach(function(el) {
-      var itempropValue = DomUtils.getAttributeValue(el, 'itemprop');
+      console.log(el)
+      var itempropValue = DomUtils.getAttributeValue(el, 'property');
       if (!itempropValue) {
         return;
+      }
+      else {
+        itempropValue = itempropValue.replace('og:', '');
       }
       var contentValue = DomUtils.getAttributeValue(el, 'content');
       // Split content like <meta itemprop="interactionCount" content="UserDownloads:418" />
       if (itempropValue === 'interactionCount' && contentValue &&
         contentValue.indexOf(':') !== -1) {
-        var keyValue = contentValue.split(':', 2);
+        var keyValue = contentValue.split(':', 1);
         itemProps[itempropValue] = itemProps[itempropValue] || {};
         if (includes(keysStringToFloat, keyValue[0])) {
           itemProps[itempropValue][keyValue[0]] = parseFloatWithComma(keyValue[1]);
@@ -48,6 +52,7 @@ function convert(detailHtml) {
       reject(new InvalidFormatError('There is no meta property'));
       return;
     }
+    console.log(itemProps)
     if (!Object.prototype.hasOwnProperty.call(itemProps, 'url') || !itemProps['url']) {
       reject(new InvalidFormatError('url in response is required'));
       return;

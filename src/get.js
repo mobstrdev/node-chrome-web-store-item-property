@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('request').defaults({maxRedirects:20, followAllRedirects: true, followOriginalHttpMethod: true, followRedirect: true});
 var Promise = Promise || require('es6-promise').Promise;
 var isOk = require('is-ok');
 
@@ -7,7 +7,7 @@ var buildDetailUrl = require('./build-detail-url');
 var mergeConfig = require('./merge-config');
 var defaultConfig = {
   headers: {
-    'User-Agent': 'https://github.com/pandawing/node-chrome-web-store-item-property'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
   },
   qs: {
     hl: 'en',
